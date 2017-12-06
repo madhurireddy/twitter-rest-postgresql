@@ -14,6 +14,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -22,13 +24,9 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Employee JPA entity class.
- * @author Jobinesh
  */
 @Entity
 @Table(name = "EMPLOYEE")
@@ -78,9 +76,10 @@ public class Employee implements Serializable {
 //    private Collection<Employee> employeeCollection;
     
     
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "followers")
     @Column(name = "follower_id")
+    //@JoinTable(name="followers",joinColumns=@JoinColumn(name="follower_id"))
     private List<Employee> followers = new ArrayList<>();
     
     public Employee() {
@@ -145,8 +144,7 @@ public class Employee implements Serializable {
         this.createdDate = createdDate;
     }
 
-    @JsonIgnore
-    @XmlTransient
+    
     public List<Employee> getFollowers() {
         return followers;
     }

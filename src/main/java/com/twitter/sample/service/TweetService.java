@@ -29,7 +29,6 @@ public class TweetService {
 
 	public List<Tweet> findTopTweetsForUser(Integer employeeId) {
 		Set<Integer> employeeIds = employeeService.findFollowers(employeeId);
-		System.out.println("222:" + employeeIds);
 		log.info("followers:" + employeeIds);
 		return tweetRepository.findByEmployeeIds(employeeIds);
 	}

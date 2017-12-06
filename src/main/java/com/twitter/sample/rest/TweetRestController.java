@@ -27,6 +27,8 @@ import com.twitter.sample.repo.TweetRepository;
 import com.twitter.sample.service.TweetService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
@@ -62,6 +64,13 @@ public class TweetRestController extends AbstractRestHandler{
     		produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Gets all tweets page by page", notes = "Returns a page at a time, provide page no(zero indexed) and size as input ")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
+                value = "Results page you want to retrieve (0..N)"),
+        @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
+                value = "Number of records per page."),
+        
+    })
     public Page<Tweet> getAllTweetsPaginated(@RequestParam("page") int page, @RequestParam("size") int size) {
 
         Page<Tweet> resultPage = tweetService.getAllTweets(page, size);
@@ -91,19 +100,15 @@ public class TweetRestController extends AbstractRestHandler{
 	    }
 	
 
-//	@RequestMapping(
-//			params = {"first-name"},
-//			method = RequestMethod.GET)
-//	public ResponseEntity<Collection<Employee>> findEmployeeWithFirstName(@RequestParam(value = "first-name") String name) {
-//		return new ResponseEntity<>(repository.findByFirstName(name), HttpStatus.OK);
-//	}
-
-	@RequestMapping(
-			params = {"employee-id"},
-			method = RequestMethod.GET)
-	public ResponseEntity<Collection<Tweet>> findTweetWithEmployeeId(@RequestParam(value = "employee-id") int employeeId) {
-		return new ResponseEntity<>(repository.findByEmployeeId(employeeId), HttpStatus.OK);
-	}
+	 @RequestMapping(
+			 params = {"employee-id"},
+			 method = RequestMethod.GET,
+			 produces = {"application/json", "application/xml"})
+	 @ResponseStatus(HttpStatus.OK)
+	 @ApiOperation(value = "Get tweets by employee id", notes = "You have to provide a valid employee ID.")
+	 public ResponseEntity<Collection<Tweet>> findTweetWithEmployeeId(@RequestParam(value = "employee-id") int employeeId) {
+		 return new ResponseEntity<>(repository.findByEmployeeId(employeeId), HttpStatus.OK);
+	 }
 
 	
 	@RequestMapping(value = "/{id}",
@@ -141,9 +146,10 @@ public class TweetRestController extends AbstractRestHandler{
 	@RequestMapping(
 			value = "/top-tweets/{id}",
 			method = RequestMethod.GET)
-	public ResponseEntity<Collection<Tweet>> getTopTweetsForUser(@PathVariable Integer id) {
+	@ResponseStatus(HttpStatus.OK)
+	public Collection<Tweet> getTopTweetsForUser(@PathVariable Integer id) {
 		List<Tweet> tweets = tweetService.findTopTweetsForUser(id);
-		return new ResponseEntity<>(tweets, HttpStatus.OK);
+		return tweets;
 	}
 	
 }
