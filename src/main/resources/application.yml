@@ -1,0 +1,39 @@
+# Spring Boot configuration
+spring:
+  profiles:
+    active: development
+# Database
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/twitter?createDa‌​tabaseIfNotExist=tru‌​e
+    username: madhuri
+    password: madhuri
+# JPA properties
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties.hibernate:
+      enable_lazy_load_no_trans: true
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+    generate-ddl: false
+# Logger configuration
+logging:
+  pattern:
+    console: "%d %-5level %logger : %msg%n"
+  level:
+    ROOT: INFO
+#    org.springframework: INFO
+#    org.hibernate: DEBUG
+#    com.twitter: INFO    
+# Server configuration
+server:
+  port: 8080
+  sessionTimeout: 30
+# Security configuration
+security:
+  user:
+    name: user
+    password: user
