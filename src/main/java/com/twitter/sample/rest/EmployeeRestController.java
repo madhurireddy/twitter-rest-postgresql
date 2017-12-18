@@ -86,7 +86,7 @@ public class EmployeeRestController {
 		Employee currentEmployee = repository.findOne(id);
 		currentEmployee.setFirstName(employee.getFirstName());
 		currentEmployee.setLastName(employee.getLastName());
-		currentEmployee.setFollowers(employee.getFollowers());
+		currentEmployee.setFollowers(employee.getFollowingEmployees());
 
 		return new ResponseEntity<>(repository.save(currentEmployee), HttpStatus.OK);
 	}

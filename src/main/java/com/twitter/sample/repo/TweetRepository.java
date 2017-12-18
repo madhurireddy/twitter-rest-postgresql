@@ -15,10 +15,11 @@ import com.twitter.sample.domain.Tweet;
 public interface TweetRepository extends PagingAndSortingRepository<Tweet, Long> {
 	List<Tweet> findByEmployeeId(@Param("employeeId") int employeeId);
 	
-	List<Tweet> findByEmployeeIds(@Param("employeeIds") Set<Integer> employeeIds);
+	Page<Tweet> findByEmployeeIds(@Param("employeeIds") Set<Integer> employeeIds, Pageable pageable);
 	//List<Tweet> findByLastName(String name);
 	
 	Page<Tweet> findAll(Pageable pageable);
+
 }
 
 

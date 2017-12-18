@@ -1,10 +1,7 @@
 package com.twitter.sample.service;
 
-import java.util.ArrayDeque;
-import java.util.LinkedHashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -30,29 +27,33 @@ public class EmployeeService {
 	}
 
 	public Set<Integer> findFollowers(int employeeId){
-		Queue<Integer> toVisit = new ArrayDeque<>();
-		toVisit.add(employeeId);
-
-		Map<Integer, Integer> visited = new LinkedHashMap<>();
-
-		while (toVisit.size()>0) {
-			Integer node = toVisit.poll();
-
-			visited.put(node, 1);
-			//NOTE : we come out if we know the first 10 people i.e. followers
-			if (visited.size() == 10) {
-				break;
-			}
-			Employee e = employeeRepository.getOne(node);
-			List<Employee> neighbors = e.getFollowers();
+//		Queue<Integer> toVisit = new ArrayDeque<>();
+//		toVisit.add(employeeId);
+//
+//		Map<Integer, Integer> visited = new LinkedHashMap<>();
+//
+//		while (toVisit.size()>0) {
+//			Integer node = toVisit.poll();
+//
+//			visited.put(node, 1);
+//			//NOTE : we come out if we know the first 10 people i.e. followers
+//			if (visited.size() == 10) {
+//				break;
+//			}
+			Employee e = employeeRepository.getOne(employeeId);
+			List<Employee> neighbors = e.getFollowingEmployees();
+			Set<Integer> toReturn = new HashSet<>();
+			toReturn.add(employeeId);
 			for (int i = 0; i < neighbors.size(); i++) {
-				if (!visited.containsKey(neighbors.get(i).getEmployeeId())) {
-					toVisit.add(neighbors.get(i).getEmployeeId());
-				}
+				//if (!visited.containsKey(neighbors.get(i).getEmployeeId())) {
+				//	toVisit.add(neighbors.get(i).getEmployeeId());
+				//}
+				
+				toReturn.add(neighbors.get(i).getEmployeeId());
 			}
 
-		}
-		return visited.keySet();
+//		}
+		return toReturn;
 	}
 
 	public Employee createE(Employee Employee) {

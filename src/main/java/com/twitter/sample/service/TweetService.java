@@ -1,12 +1,13 @@
 package com.twitter.sample.service;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +28,14 @@ public class TweetService {
     public TweetService() {
     }
 
-	public List<Tweet> findTopTweetsForUser(Integer employeeId) {
+	public Page<Tweet> findTopTweetsForUser(Integer employeeId, int page, int size) {
 		Set<Integer> employeeIds = employeeService.findFollowers(employeeId);
+		
 		log.info("followers:" + employeeIds);
-		return tweetRepository.findByEmployeeIds(employeeIds);
+		if(employeeIds == null || employeeIds.isEmpty()) {
+			return new PageImpl<Tweet>(new ArrayList<Tweet>());
+		}
+		return tweetRepository.findByEmployeeIds(employeeIds, new PageRequest(page, size));
 	}
 	
 	public Tweet find(long tweetId) {

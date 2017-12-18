@@ -34,6 +34,6 @@ server:
   sessionTimeout: 30
 # Security configuration
 security:
-  user:
+   user:
     name: user
     password: user

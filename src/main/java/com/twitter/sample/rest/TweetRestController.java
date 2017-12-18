@@ -79,6 +79,25 @@ public class TweetRestController extends AbstractRestHandler{
         }
         return resultPage;
     }
+    
+	
+	
+    @RequestMapping( value = "/top-tweets/{id}", params = { "page", "size" }, 
+    		method = RequestMethod.GET, 
+    		produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Gets all tweets page by page", notes = "Returns a page at a time, provide page no(zero indexed) and size as input ")
+    @ApiImplicitParams({
+    	@ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
+    			value = "Results page you want to retrieve (0..N)"),
+    	@ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
+    	value = "Number of records per page."),
+
+    })
+    public Page<Tweet> getTopTweetsForUser(@PathVariable Integer id, @RequestParam("page") int page, @RequestParam("size") int size) {
+    		Page<Tweet> tweetsPage = tweetService.findTopTweetsForUser(id, page,size);
+    		return tweetsPage;
+    }
    
 
 	 @RequestMapping(value = "/{id}",
@@ -143,14 +162,7 @@ public class TweetRestController extends AbstractRestHandler{
 		repository.deleteAll();
 	}
 	
-	@RequestMapping(
-			value = "/top-tweets/{id}",
-			method = RequestMethod.GET)
-	@ResponseStatus(HttpStatus.OK)
-	public Collection<Tweet> getTopTweetsForUser(@PathVariable Integer id) {
-		List<Tweet> tweets = tweetService.findTopTweetsForUser(id);
-		return tweets;
-	}
+
 	
 }
 

@@ -77,10 +77,10 @@ public class Employee implements Serializable {
     
     
     @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "followers")
-    @Column(name = "follower_id")
+    @CollectionTable(name = "following_employees")
+    @Column(name = "following_employee_id")
     //@JoinTable(name="followers",joinColumns=@JoinColumn(name="follower_id"))
-    private List<Employee> followers = new ArrayList<>();
+    private List<Employee> followingEmployees = new ArrayList<>();
     
     public Employee() {
     }
@@ -145,12 +145,12 @@ public class Employee implements Serializable {
     }
 
     
-    public List<Employee> getFollowers() {
-        return followers;
+    public List<Employee> getFollowingEmployees() {
+        return followingEmployees;
     }
 
-    public void setFollowers(List<Employee> followers) {
-        this.followers = followers;
+    public void setFollowers(List<Employee> followingEmployees) {
+        this.followingEmployees = followingEmployees;
     }
 
     @Override
