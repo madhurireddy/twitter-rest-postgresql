@@ -9,7 +9,11 @@
 * Hibernate;
 * Spring Security (as basic authentication).
 
-#####To run this application use:
+### Database:
+
+Postgres must be running locally to get this running. If running remotely, please change the property file to reflect the jdbcurl and driver etc.
+
+### To run this application use:
 
 mvn spring-boot:run
 
