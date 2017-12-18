@@ -25,9 +25,9 @@ http://localhost:8080/api/v1/tweets/top-tweets/1
 http://localhost:8080/api/v1/employees/followers/1
 http://localhost:8080/api/v1/employees/1
 
-###{
+{
 ###  "employeeId": 4,
 ###  "tweetContent": "hello, I am visiting a museum today",
 ###  "tweetDate": "2017-12-06T17:57:22.803Z",
 ###  
-###}
+}
