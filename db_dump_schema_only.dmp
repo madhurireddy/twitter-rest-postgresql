@@ -1,0 +1,218 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 10.1
+-- Dumped by pg_dump version 10.1
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: employee; Type: TABLE; Schema: public; Owner: madhuri
+--
+
+CREATE TABLE employee (
+    employee_id integer NOT NULL,
+    fname text,
+    lname text,
+    email text,
+    phone_number text,
+    created_date date
+);
+
+
+ALTER TABLE employee OWNER TO madhuri;
+
+--
+-- Name: EMPLOYEES_EMPLOYEE_ID_seq; Type: SEQUENCE; Schema: public; Owner: madhuri
+--
+
+CREATE SEQUENCE "EMPLOYEES_EMPLOYEE_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "EMPLOYEES_EMPLOYEE_ID_seq" OWNER TO madhuri;
+
+--
+-- Name: EMPLOYEES_EMPLOYEE_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: madhuri
+--
+
+ALTER SEQUENCE "EMPLOYEES_EMPLOYEE_ID_seq" OWNED BY employee.employee_id;
+
+
+--
+-- Name: following_employees; Type: TABLE; Schema: public; Owner: madhuri
+--
+
+CREATE TABLE following_employees (
+    id integer NOT NULL,
+    employee_employee_id integer NOT NULL,
+    following_employees_employee_id integer NOT NULL
+);
+
+
+ALTER TABLE following_employees OWNER TO madhuri;
+
+--
+-- Name: FOLLOWERS_id_seq; Type: SEQUENCE; Schema: public; Owner: madhuri
+--
+
+CREATE SEQUENCE "FOLLOWERS_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "FOLLOWERS_id_seq" OWNER TO madhuri;
+
+--
+-- Name: FOLLOWERS_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: madhuri
+--
+
+ALTER SEQUENCE "FOLLOWERS_id_seq" OWNED BY following_employees.id;
+
+
+--
+-- Name: tweet; Type: TABLE; Schema: public; Owner: madhuri
+--
+
+CREATE TABLE tweet (
+    id integer NOT NULL,
+    employee_id integer NOT NULL,
+    tweet_content text NOT NULL,
+    tweet_date timestamp without time zone
+);
+
+
+ALTER TABLE tweet OWNER TO madhuri;
+
+--
+-- Name: tweets_id_seq; Type: SEQUENCE; Schema: public; Owner: madhuri
+--
+
+CREATE SEQUENCE tweets_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE tweets_id_seq OWNER TO madhuri;
+
+--
+-- Name: tweets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: madhuri
+--
+
+ALTER SEQUENCE tweets_id_seq OWNED BY tweet.id;
+
+
+--
+-- Name: employee employee_id; Type: DEFAULT; Schema: public; Owner: madhuri
+--
+
+ALTER TABLE ONLY employee ALTER COLUMN employee_id SET DEFAULT nextval('"EMPLOYEES_EMPLOYEE_ID_seq"'::regclass);
+
+
+--
+-- Name: following_employees id; Type: DEFAULT; Schema: public; Owner: madhuri
+--
+
+ALTER TABLE ONLY following_employees ALTER COLUMN id SET DEFAULT nextval('"FOLLOWERS_id_seq"'::regclass);
+
+
+--
+-- Name: tweet id; Type: DEFAULT; Schema: public; Owner: madhuri
+--
+
+ALTER TABLE ONLY tweet ALTER COLUMN id SET DEFAULT nextval('tweets_id_seq'::regclass);
+
+
+--
+-- Name: employee EMPLOYEES_pkey; Type: CONSTRAINT; Schema: public; Owner: madhuri
+--
+
+ALTER TABLE ONLY employee
+    ADD CONSTRAINT "EMPLOYEES_pkey" PRIMARY KEY (employee_id);
+
+
+--
+-- Name: following_employees FOLLOWERS_pkey; Type: CONSTRAINT; Schema: public; Owner: madhuri
+--
+
+ALTER TABLE ONLY following_employees
+    ADD CONSTRAINT "FOLLOWERS_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: tweet tweets_pkey; Type: CONSTRAINT; Schema: public; Owner: madhuri
+--
+
+ALTER TABLE ONLY tweet
+    ADD CONSTRAINT tweets_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: following_employees employee_id; Type: FK CONSTRAINT; Schema: public; Owner: madhuri
+--
+
+ALTER TABLE ONLY following_employees
+    ADD CONSTRAINT employee_id FOREIGN KEY (employee_employee_id) REFERENCES employee(employee_id);
+
+
+--
+-- Name: tweet employee_id; Type: FK CONSTRAINT; Schema: public; Owner: madhuri
+--
+
+ALTER TABLE ONLY tweet
+    ADD CONSTRAINT employee_id FOREIGN KEY (employee_id) REFERENCES employee(employee_id);
+
+
+--
+-- Name: following_employees followerid; Type: FK CONSTRAINT; Schema: public; Owner: madhuri
+--
+
+ALTER TABLE ONLY following_employees
+    ADD CONSTRAINT followerid FOREIGN KEY (following_employees_employee_id) REFERENCES employee(employee_id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
